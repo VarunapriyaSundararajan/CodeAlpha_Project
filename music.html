@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background:url("download (99).jpg") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.player {
+    background: #333;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    background: #444;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #555;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#currentTime, #duration {
+    font-size: 14px;
+}
+
+
+        </style>
+
+        <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeElem = document.getElementById('currentTime');
+    const durationElem = document.getElementById('duration');
+
+    // Update the progress bar and time
+    function updateProgress() {
+        const { currentTime, duration } = audioPlayer;
+        const progress = (currentTime / duration) * 100;
+        progressBar.value = progress;
+        currentTimeElem.textContent = formatTime(currentTime);
+        durationElem.textContent = formatTime(duration);
+    }
+
+    // Format time in mm:ss
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${secs}`;
+    }
+
+    // Play or pause the audio
+    function togglePlayPause() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playPauseBtn.textContent = 'Pause';
+        } else {
+            audioPlayer.pause();
+            playPauseBtn.textContent = 'Play';
+        }
+    }
+
+    // Stop the audio
+    function stopAudio() {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        playPauseBtn.textContent = 'Play';
+    }
+
+    // Seek through the audio
+    function seek() {
+        const newTime = (progressBar.value / 100) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+
+    // Event listeners
+    playPauseBtn.addEventListener('click', togglePlayPause);
+    stopBtn.addEventListener('click', stopAudio);
+    progressBar.addEventListener('input', seek);
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+
+    // Initialize
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        durationElem.textContent = formatTime(audioPlayer.duration);
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const progressBar = document.getElementById('progressBar');
+    const volumeControl = document.getElementById('volumeControl');
+    const currentTimeElem = document.getElementById('currentTime');
+    const durationElem = document.getElementById('duration');
+    const trackTitleElem = document.getElementById('trackTitle');
+
+    
+    
+
+    // Adjust the volume
+    function adjustVolume() {
+        audioPlayer.volume = volumeControl.value / 100;
+    }
+
+    // Event listeners
+    playPauseBtn.addEventListener('click', togglePlayPause);
+    stopBtn.addEventListener('click', stopAudio);
+    progressBar.addEventListener('input', seek);
+    volumeControl.addEventListener('input', adjustVolume);
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+
+    // Initialize
+    audioPlayer.addEventListener('loadedmetadata', () => {
+        durationElem.textContent = formatTime(audioPlayer.duration);
+        trackTitleElem.textContent = audioPlayer.src.split('/').pop(); // Display the file name as track title
+    });
+});
+
+
+            </script>
+    <div class="player">
+        <h1>Music Player</h1>
+        <audio id="audioPlayer" src="c:\fav songs\Kadhal-Oru-Aagayam-MassTamilan.com.mp3"></audio>
+        <div class="controls">
+            <button id="playPauseBtn">Play</button>
+            <button id="stopBtn">Stop</button>
+            <input type="range" id="progressBar" value="0" max="100">
+           
+            <input type="range" id="volumeControl" value="100" max="100">
+            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
